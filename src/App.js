@@ -12,6 +12,7 @@ function App() {
         maxValue={100}
         label="x-label"
       />
+      
     </React.Fragment>
   );
 }

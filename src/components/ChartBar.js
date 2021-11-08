@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import Styles from "./ChartBar.module.css";
 
+//key?
+//value
+//maxValue
+//label
+
 const ChartBar = (props) => {
-  const [isColumn, setIsColumn] = useState(true);
+  const isAColumn = true;
 
   let barFillValue = "0%";
 
@@ -11,23 +16,28 @@ const ChartBar = (props) => {
   }
 
   return (
-    <div
-      className={
-        isColumn ? Styles["chart-bar-column"] : Styles["chart-bar-row"]
-      }
-    >
+    <React.Fragment>
       <div
-        className={
-          isColumn ? Styles["chart-bar-column__inner"] : Styles["chart-bar-row__inner"]
-        }
+        className={`${Styles["chart-bar"]} ${
+          +isAColumn ? Styles["column"] : Styles["row"]
+        }`}
       >
+        <div className={Styles["chart-bar__label"]}>{props.label}</div>
         <div
-          className={Styles["chart-bar__fill"]}
-          style={isColumn ? { height: barFillValue } : { width: barFillValue }}
-        ></div>
+          className={`${Styles["chart-bar-inner"]} ${
+            isAColumn ? Styles["column-inner"] : Styles["row-inner"]
+          }`}
+        >
+          <div
+            className={Styles["chart-bar__fill"]}
+            style={
+              isAColumn ? { height: barFillValue } : { width: barFillValue }
+            }
+          ></div>
+        </div>
+        <div className={Styles["chart-bar__label"]}>{props.label}</div>
       </div>
-      <div className={Styles["chart-bar_label"]}>{props.label}</div>
-    </div>
+    </React.Fragment>
   );
 };
 

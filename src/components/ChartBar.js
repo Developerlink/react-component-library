@@ -18,24 +18,25 @@ const ChartBar = (props) => {
   return (
     <React.Fragment>
       <div
-        className={`${Styles["chart-bar"]} ${
-          +isAColumn ? Styles["column"] : Styles["row"]
+        key={props.key}
+        className={`${Styles.container} ${
+          isAColumn ? Styles.column : Styles.row
         }`}
       >
-        <div className={Styles["chart-bar__label"]}>{props.label}</div>
+        <div className={Styles.label}>{props.label}</div>
         <div
-          className={`${Styles["chart-bar-inner"]} ${
-            isAColumn ? Styles["column-inner"] : Styles["row-inner"]
+          className={`${Styles.chartBar} ${
+            isAColumn ? Styles.chartBarColumn : Styles.chartBarRow
           }`}
         >
           <div
-            className={Styles["chart-bar__fill"]}
+            className={Styles.chartBarFill}
             style={
               isAColumn ? { height: barFillValue } : { width: barFillValue }
             }
           ></div>
         </div>
-        <div className={Styles["chart-bar__label"]}>{props.label}</div>
+        <div className={Styles.label}>{props.label}</div>
       </div>
     </React.Fragment>
   );

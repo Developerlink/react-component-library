@@ -1,0 +1,145 @@
+import React, { useEffect, useRef, useState } from "react";
+import styles from "./FormUseState.module.css";
+import Input from "./Input";
+
+// Every html element has the 'key' and 'ref' prop
+
+const FormUseState = () => {
+  const [state, setState] = useState({
+    title: "",
+    amount: 0,
+    date: "",
+  });
+  const [titleIsValid, setTitleIsValid] = useState(null);
+  const [amountIsValid, setAmountIsValid] = useState(null);
+  const [dateIsValid, setDateIsValid] = useState(null);
+  const [formIsValid, setFormIsValid] = useState(false);
+  const [titleErrorMessage, setTitleErrorMessage] = useState("");
+  const titleInputRef = useRef();
+  const amountInputRef = useRef();
+  const dateInputRef = useRef();
+
+  const validate = (name, value) => {
+    if (name === "title") {
+      setTitleIsValid(true);
+      setTitleErrorMessage("");
+      if (value === "") {
+        console.log("The title is missing.");
+        setTitleErrorMessage(<p>{"The title is missing"}</p>);
+        setTitleIsValid(false);
+      } else if (10 < value.length) {
+        setTitleIsValid(false);
+        console.log("The title is too long.");
+        setTitleErrorMessage(<p>{"The title is longer than 10 characters"}</p>);
+      }
+    }
+    if (name === "amount") {
+      setAmountIsValid(true);
+      // The '+' makes it a number if it isn't already
+      if (+value < 0 || 100000 < +value) {
+        setAmountIsValid(false);
+        console.log("The amount is not set correctly.");
+      }
+    }
+    if (name === "date") {
+      setDateIsValid(true);
+      // Min and max value for input already prevents bad data
+      // if (value === undefined) {
+      //   setDateIsValid(false);
+      //   console.log("The date hasn't been set.");
+      // }
+    }
+  };
+
+  const onChangeHandler = (event) => {
+    const { name, value } = event.target;
+
+    setState((prevValue) => {
+      return {
+        ...prevValue,
+        [name]: value,
+      };
+    });
+
+    validate(name, value);
+  };
+
+  const onBlurHandler = (event) => {
+    const { name, value } = event.target;
+    validate(name, value);
+  };
+
+  const onSubmitHandler = (event) => {
+    event.preventDefault();
+
+    if (formIsValid) {
+      // Do something
+      console.log("Submitting: ");
+      console.log(state);
+    } else if (!titleIsValid) {
+      titleInputRef.current.focus();
+    } else if (!amountIsValid) {
+      amountInputRef.current.focus();
+    } else {
+      dateInputRef.current.focus();
+    }
+  };
+
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      setFormIsValid(titleIsValid && amountIsValid && dateIsValid);
+    }, 500);
+
+    return () => {
+      clearTimeout(identifier);
+    }
+  }, [titleIsValid, amountIsValid, dateIsValid])
+
+  return (
+    <React.Fragment>
+      <h2>useState</h2>
+      <form onSubmit={onSubmitHandler}>
+        <Input
+          labelText="Title"
+          name="title"
+          type="text"
+          value={state.title}
+          onChange={onChangeHandler}
+          ref={titleInputRef}
+          onBlur={onBlurHandler}
+          isValid={titleIsValid}
+        />
+        {!titleIsValid && titleErrorMessage}
+
+        <Input
+          labelText="Amount"
+          name="amount"
+          type="number"
+          min="1"
+          max="10"
+          step="1"
+          value={state.amount}
+          onChange={onChangeHandler}
+          ref={amountInputRef}
+          onBlur={onBlurHandler}
+          isValid={amountIsValid}
+        />
+
+        <Input
+          labelText="Date"
+          name="date"
+          type="date"
+          min="2019-01-01"
+          max="2022-12-31"
+          value={state.date}
+          onChange={onChangeHandler}
+          ref={dateInputRef}
+          isValid={dateIsValid}
+        />
+        <button type="submit">Submit</button>
+      </form>
+    </React.Fragment>
+  );
+};
+
+export default FormUseState;

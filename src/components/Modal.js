@@ -1,20 +1,23 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import Card from "./Card";
 import Styles from "./Modal.module.css";
 
 // className?
-// title
-// message
 // onClose
+// onConfirm
 
 const Modal = (props) => {
-  const onClickHandler = () => {
-    props.onClose();
+  const Backdrop = (props) => {
+    return <div className={Styles.backdrop} onClick={props.onClose} />;
   };
 
-  return (
-    <div>
-      <div className={Styles.backdrop} onClick={onClickHandler} />
+  const ModalOverlay = (props) => {
+    const onClickHandler = () => {
+      props.onConfirm();
+    };
+
+    return (
       <Card className={Styles.modal}>
         <header>
           <h2>Title</h2>
@@ -26,7 +29,20 @@ const Modal = (props) => {
           <button onClick={onClickHandler}>Ok</button>
         </footer>
       </Card>
-    </div>
+    );
+  };
+
+  return (
+    <React.Fragment>
+      {ReactDOM.createPortal(
+        <Backdrop onClose={props.onClose}/>,
+        document.getElementById("backdrop-root"))
+      }
+      {
+        ReactDOM.createPortal(<ModalOverlay onConfirm={props.onConfirm} />,
+        document.getElementById("modal-root"))
+      }
+    </React.Fragment>
   );
 };
 

@@ -36,7 +36,7 @@ const FormUseState = () => {
     if (name === "amount") {
       setAmountIsValid(true);
       // The '+' makes it a number if it isn't already
-      if (+value < 0 || 100000 < +value) {
+      if (+value < 0 || 10 < +value) {
         setAmountIsValid(false);
         console.log("The amount is not set correctly.");
       }

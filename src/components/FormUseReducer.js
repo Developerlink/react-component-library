@@ -1,12 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useReducer } from "react";
 import styles from "./FormUseReducer.module.css";
 import Input from "./Input";
 
 // Every html element has the 'key' and 'ref' prop
-
 const stateReducer = (state, action) => {
-  return { title: }
-}
+  return { ...state, [action.value.name]: action.value.value };
+};
 
 const FormUseState = () => {
   const [state, dispatchState] = useReducer(stateReducer, {
@@ -39,7 +38,7 @@ const FormUseState = () => {
     if (name === "amount") {
       setAmountIsValid(true);
       // The '+' makes it a number if it isn't already
-      if (+value < 0 || 100000 < +value) {
+      if (+value < 0 || 10 < +value) {
         setAmountIsValid(false);
         console.log("The amount is not set correctly.");
       }
@@ -56,10 +55,9 @@ const FormUseState = () => {
 
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
-
-    dispatchState({type: })
-
+    dispatchState({ type: "", value: { name: name, value: value } });
     validate(name, value);
+    //console.log(state);
   };
 
   const onBlurHandler = (event) => {
@@ -83,6 +81,10 @@ const FormUseState = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(state);
+  });
+
   return (
     <React.Fragment>
       <h2>useReducer</h2>
@@ -97,8 +99,7 @@ const FormUseState = () => {
           onBlur={onBlurHandler}
           isValid={titleIsValid}
         />
-    { !titleIsValid && titleErrorMessage}
-
+        {!titleIsValid && titleErrorMessage}
 
         <Input
           labelText="Amount"

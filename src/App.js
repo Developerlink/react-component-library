@@ -5,6 +5,7 @@ import ChartBarExample from "./components/ChartBarExample";
 import ModalExample from "./components/ModalExample";
 import FormUseState from "./components/FormUseState";
 import FormUseReducer from "./components/FormUseReducer";
+import UseFetchGetExample from "./components/UseFetchGetExample";
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
       {/* <ChartBarExample /> */}
       {/* <ModalExample /> */}
       {/* <FormUseState /> */}
-      <FormUseReducer />
+      {/* <FormUseReducer /> */}
+      {/* <UseFetchGetExample /> */}
     </React.Fragment>
   );
 }

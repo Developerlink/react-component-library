@@ -1,0 +1,12 @@
+
+.error {
+    font-size: 0.9rem;
+    color: crimson;
+    font-weight: 500;
+    position: relative;
+    bottom: 0.6rem;
+}
+
+.success {
+    color: rgb(7, 165, 7);
+}
